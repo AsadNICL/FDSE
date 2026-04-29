@@ -34,6 +34,9 @@ iterations = parse.(Int, keys(file_xz["timeseries/t"]))
 
 @info "Making an animation from saved data..."
 
+t_save = zeros(length(iterations))
+wsqavg_save = zeros(length(iterations))
+
 # Here, we loop over all iterations
 anim = @animate for (i, iter) in enumerate(iterations)
 
@@ -48,6 +51,9 @@ anim = @animate for (i, iter) in enumerate(iterations)
     ϵ_xz = file_xz["timeseries/ϵ/$iter"][:, 1, :];
 
     t = file_xz["timeseries/t/$iter"];
+    
+    wsqavg_save[i] = mean(w_xz.^2) # save the vertical velocity variance for plotting at the end;
+    t_save[i] = t # save the time
 
         b_xz_plot = heatmap(xb, zb, b_xz'; color = :thermal, xlabel = "x", ylabel = "z", aspect_ratio = :equal, xlims = (0, Lx), ylims = (0, Lz)); 
         ω_xz_plot = heatmap(xω, zω, ω_xz'; color = :thermal, xlabel = "x", ylabel = "z", aspect_ratio = :equal, xlims = (0, Lx), ylims = (0, Lz)); 
@@ -73,3 +79,7 @@ close(file_xz)
 
 # Save the animation to a file
 mp4(anim, "KH.mp4", fps = 20) # hide
+
+logwsqsave = log.(wsqavg_save)
+
+PlotlyPlot(t_save, logwsqsave, Layout(xaxis_title="tₓ",yaxis_title="vertical velocity variance",plot_bgcolor="white",yaxis=attr(gridcolor="lightgrey",zerolinecolor="black"),xaxis=attr(gridcolor="lightgrey",zerolinecolor="black")))

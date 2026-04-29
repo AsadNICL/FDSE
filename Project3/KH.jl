@@ -6,7 +6,7 @@ using Oceananigans
 
 # First, we need to set some physical parameters for the simulation
 # Set the domain size in non-dimensional coordinates
-Lx = 8  # size in the x-direction
+Lx = 8.87  # size in the x-direction
 Lz = 1   # size in the vertical (z) direction 
 
 # Set the grid size
@@ -83,6 +83,7 @@ b = model.tracers.b # extract the buoyancy
 ω = ∂z(u) - ∂x(w) # The spanwise vorticity
 χ = (1 / (Re * Pr)) * (∂x(b)^2 + ∂z(b)^2) # The dissipation rate of buoyancy variance
 ϵ = (1 / Re) * (∂x(u)^2 + ∂z(u)^2 + ∂x(w)^2 + ∂z(w)^2) # The dissipation rate of kinetic energy
+
 
 # Set the name of the output file
 filename = "KH"

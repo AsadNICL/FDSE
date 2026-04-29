@@ -21,7 +21,7 @@ duration = 20 # The non-dimensional duration of the simulation
 Re = 5000
 
 # Set the change in the non-dimensional buouancy 
-Δb = 1 
+Δb = 1
 
 # Set the amplitude of the random perturbation (kick)
 kick = 0.05
@@ -68,7 +68,8 @@ model = NonhydrostaticModel(; grid,
 uᵢ(x, z) = kick * randn()
 vᵢ(x, z) = 0
 wᵢ(x, z) = kick * randn()
-bᵢ(x, z) = (Δb / 2) * (1 + tanh((x - xl) / Lf))
+bᵢ(x, z) = 2*z*(Δb / 2) * (1 + tanh((x - xl) / Lf))
+#bᵢ(x, z) = (Δb / 2) * (0.5-0.5*tanh((x - (Lx - xl)) / Lf) + tanh((x - xl) / Lf))
 cᵢ(x, z) = exp(-((x - Lx / 2) / (Lx / 50))^2) # Initialize with a thin tracer (dye) streak in the center of the domain
 
 # Send the initial conditions to the model to initialize the variables
